@@ -78,8 +78,9 @@ export default {
          this.carnes = data.carnes
          this.opcionaisdata = data.opcionais
 
+         // console.log(data)
       },
-      async createBruger(e) {
+      async createBurger(e) {
          e.preventDefault()
          const data = {
             nome: this.nome,
@@ -98,7 +99,7 @@ export default {
          console.log(res)
       }
    },
-   mounted() {
+      mounted() {
       this.getIngredientes()
    }
 }
