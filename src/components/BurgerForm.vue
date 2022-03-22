@@ -1,6 +1,6 @@
 <template>
    <div>
-      <p>Componente de Mensagem</p>
+      <Message :msg="msg" v-show="msg" />
       <div>
          <form id="burger-form" @submit="createBurger">
             <div class="input-container">
@@ -51,7 +51,10 @@
    </div>
 </template>
 
-<script>import { onMounted } from "vue";
+<script>
+import { onMounted } from "vue";
+
+import Message from '../components/Message.vue';
 
 export default {
    name: "BurgerForm",
@@ -71,7 +74,7 @@ export default {
    methods: {
       async getIngredientes() {
 
-         const req = await fetch("http://192.168.1.112:3000/ingredientes")
+         const req = await fetch("http://localhost:3000/ingredientes")
          const data = await req.json()
 
          this.paes = data.paes
@@ -90,17 +93,33 @@ export default {
             status: "Solicitado"
          }
          const dataJson = JSON.stringify(data)
-         const req = await fetch("http://192.168.1.112:3000/burgers", {
+         const req = await fetch("http://localhost:3000/burgers", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: dataJson
          })
          const res = await req.json()
-         console.log(res)
+
+
+         // colocar mensagem
+         this.msg = `Pedido nº ${res.id} realizado com sucesso!`
+
+         // limpar msg
+         setTimeout(() => this.msg = "", 3000)
+
+         // limpar campos
+         this.nome = "";
+         this.carne = "";
+         this.pao = "";
+         this.opcionais = "";
+
       }
    },
-      mounted() {
+   mounted() {
       this.getIngredientes()
+   },
+   components: {
+      Message
    }
 }
 </script>
